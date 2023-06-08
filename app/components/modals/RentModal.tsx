@@ -66,12 +66,13 @@ const RentModal = () => {
   // The Map component is imported dynamically using the dynamic function from the next/dynamic package.
   // The ssr option is set to false to ensure the component is not rendered on the server.
   // The useMemo hook is used to memoize the dynamically imported Map component.
-  // The location variable is passed as a dependency to trigger re-rendering when the location changes.
   const Map = useMemo(
     () =>
       dynamic(() => import("../Map"), {
         ssr: false,
       }),
+    // The location variable is passed as a dependency to trigger re-rendering when the location changes.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [location]
   );
 
