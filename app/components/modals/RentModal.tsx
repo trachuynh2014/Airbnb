@@ -7,7 +7,11 @@ import Heading from "../Heading";
 import { categories } from "../navbar/Categories";
 import CategoryInput from "../inputs/CategoryInput";
 import { FieldValues, useForm } from "react-hook-form";
+import CountrySelect from "../inputs/CountrySelect";
+import dynamic from "next/dynamic";
 
+// This enum defines the different steps/stages of the renting process,
+// assigning a numeric value to each step.
 enum STEPS {
   CATEGORY = 0,
   LOCATION = 1,
@@ -44,6 +48,19 @@ const RentModal = () => {
   });
 
   const category = watch("category");
+  const location = watch("location");
+
+  // The Map component is imported dynamically using the dynamic function from the next/dynamic package.
+  // The ssr option is set to false to ensure the component is not rendered on the server.
+  // The useMemo hook is used to memoize the dynamically imported Map component.
+  // The location variable is passed as a dependency to trigger re-rendering when the location changes.
+  const Map = useMemo(
+    () =>
+      dynamic(() => import("../Map"), {
+        ssr: false,
+      }),
+    [location]
+  );
 
   const setCustomValue = (id: string, value: any) => {
     setValue(id, value, {
@@ -53,10 +70,12 @@ const RentModal = () => {
     });
   };
 
+  // defined to decrement the current step value by 1 when the back button is clicked.
   const onBack = () => {
     setStep((value) => value - 1);
   };
 
+  // vice versa
   const onNext = () => {
     setStep((value) => value + 1);
   };
@@ -97,6 +116,22 @@ const RentModal = () => {
       </div>
     </div>
   );
+
+  if (step === STEPS.LOCATION) {
+    bodyContent = (
+      <div className="flex flex-col gap-8">
+        <Heading
+          title="Where is your place located?"
+          subtitle="Help guests find you!"
+        />
+        <CountrySelect
+          value={location}
+          onChange={(value) => setCustomValue("location", value)}
+        />
+        <Map center={location?.latlng} />
+      </div>
+    );
+  }
 
   return (
     <Modal
