@@ -4,6 +4,8 @@
   <em>This project is an Airbnb clone built using TypeScript, Prisma, Next.js 13, MongoDB, Next Auth, Tailwind CSS, and Zustand. It aims to replicate the functionality and design of the popular Airbnb platform.</em>
 </p>
 
+> **Note:** This project is cloned based on the code from the [next13-airbnb-clone](https://github.com/AntonioErdeljac/next13-airbnb-clone) repository.
+
 ## Features
 
 - User authentication and authorization using Next Auth, supporting various authentication providers such as GitHub and Google.
